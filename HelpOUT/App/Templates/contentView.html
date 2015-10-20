@@ -1,0 +1,111 @@
+﻿<!--start taskView row-->
+<div class="row padding">
+    <!--start buttons before the task list-->
+    <div class="row padding-sm">
+        <div class="col-md-1">
+            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#createTaskModal">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                New task
+            </button>
+        </div>
+        
+        <div class="col-md-2 btn-group">
+            <button class="btn btn-xs btn-default switch" ng-click="filters = {isComplete: true}">
+                O
+            </button>
+            <button class="btn btn-xs btn-default switch" ng-click="filters = {isComplete: false}">
+                &nbsp;I&nbsp;
+            </button>
+        </div>
+    </div>
+    <!--start task list row-->
+    <div class="row padding-sm">
+        <table id="unfinished tasks"class="table table-bordered">
+            <tr>
+                    <th>
+                        <a class="tbl-hd" href="" ng-click='sortType = "title"; sortReverse = !sortReverse'>
+                            Title&nbsp;<span ng-show="sortType === 'title' && !sortReverse" class="glyphicon glyphicon-chevron-up"></span><span ng-show="sortType === 'title' && sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a class="tbl-hd" href="" ng-click="sortType = 'date'; sortReverse = !sortReverse">
+                            Date&nbsp;<span ng-show="sortType === 'date' && !sortReverse" class="glyphicon glyphicon-chevron-up"></span><span ng-show="sortType === 'date' && sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                    </th>
+                    <th>
+                        Comments
+                    </th>
+
+                    <th><span class="glyphicon glyphicon-edit"></span></th>
+            </tr>
+            <!--isComplete='true'-->
+            <tr ng-repeat="task in tasks | orderBy:sortType:sortReverse | filter:filters">
+                <td>{{task.title}}</td>
+                <td>{{task.time}}</td>
+                <td>{{task.date}}</td>
+                <td>{{task.comments}}</td>
+                <td><input type="checkbox" ng-model="task.checked" ng-change="selectTask(task)" /></td>
+            </tr>
+        </table>
+    </div>
+        <!--start buttons after the task list-->
+    <div class="row btn-group padding-sm">
+        <button class="btn btn-xs btn-danger" ng-click="removeTask()">
+                <span class="glyphicon glyphicon-remove-circle"></span>
+                Remove
+            </button>
+        <button class="btn btn-xs btn-danger" ng-click="markFinished()">
+                <span class="glyphicon glyphicon-check"></span>
+            Finished
+            </button>
+        <button class="btn btn-xs btn-danger" ng-click="addToNewTrip()">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            New trip
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="createTaskModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" id="taskModal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create a new task</h4>
+                </div>
+                <div class="modal-body">
+                        <form id="taskForm">
+                            <table>
+                                <tr>
+                                    <td>Title: </td>
+                                    <td><input type="text" id="title" data-ng-model="title"/></td>
+                                </tr>
+                               
+                                <tr>
+                                    <td>Time: </td>
+                                    <td><input type="time" id="time" data-ng-model="time"  /></td>
+                                </tr>
+                                <tr>
+                                    <td>Date: </td>
+                                    <td><input type="date" id="date" data-format="MM/dd/yyyy HH:mm:ss PP" data-ng-model="date" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Comments: </td>
+                                    <td><textarea rows="4" cols="50" type="text" id="comments" data-ng-model="comments" /></td>
+                                </tr>
+                            </table>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger btn-xs" ng-click="createTask(title, time,date, comments)" data-dismiss="modal">Create</button>
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
